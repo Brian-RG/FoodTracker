@@ -2,10 +2,10 @@ package com.example.android.foodtracker;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,14 +64,35 @@ public class DBHelper extends SQLiteOpenHelper {
     public void update(int id){
         //To develop
         //To coordinate
+        /*
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues cv= new ContentValues();
+        cv.put(,hob);
+        String clause = NAME + " = ?";
+        String[] args = {"Brian"};
+        db.update(TABLE_NAME,cv,clause,args);*/
     }
 
-    public List<List> retrieveAll(){
+    public List<FoodRow> retrieveAll(){
         SQLiteDatabase db = getReadableDatabase();
 
         // Mejorar
-        List<List> registros = new ArrayList<>();
-        return registros;
+        List<FoodRow> rows = new ArrayList<>();
+        Cursor c = db.rawQuery("SELECT * FROM "+TABLE_NAME, null);
+        c.moveToFirst();
+        while(c!=null){
+            int id = c.getInt(0);
+            String foodname = c.getString(1);
+            String foodDescription = c.getString(2);
+            float foodPrice = c.getFloat(3);
+            byte[] image = c.getBlob(4);
+            FoodRow fr = new FoodRow(id,foodname,foodDescription,foodPrice,image);
+            rows.add(fr);
+        }
+        c.close();
+        db.close();
+        return rows;
     }
 
 
