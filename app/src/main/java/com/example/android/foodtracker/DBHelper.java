@@ -42,14 +42,14 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(query, params);
     }
 
-    public void Insert(String name, String description, float price, byte[] img){
+    public void Insert(String name, String description, float price, byte[] imgurl){
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues contenido = new ContentValues();
         contenido.put(FOOD_NAME,name);
         contenido.put(DESCRIPTION,description);
         contenido.put(PRICE,price);
-        contenido.put(IMAGE,img);
+        contenido.put(IMAGE,imgurl);
 
         db.insert(TABLE_NAME,null,contenido);
     }
@@ -61,17 +61,19 @@ public class DBHelper extends SQLiteOpenHelper {
         return db.delete(TABLE_NAME, clause, args);
     }
 
-    public void update(int id){
+    public void update(int id,String newName, String newDescription, float newPrice,byte[] newImage){
         //To develop
         //To coordinate
-        /*
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues cv= new ContentValues();
-        cv.put(,hob);
-        String clause = NAME + " = ?";
-        String[] args = {"Brian"};
-        db.update(TABLE_NAME,cv,clause,args);*/
+        cv.put(FOOD_NAME,newName);
+        cv.put(DESCRIPTION,newDescription);
+        cv.put(PRICE,newPrice);
+        cv.put(IMAGE,newImage);
+        String clause = ID + " = ?";
+        String[] args = {Integer.toString(id)};
+        db.update(TABLE_NAME,cv,clause,args);
     }
 
     public List<FoodRow> retrieveAll(){
@@ -80,19 +82,36 @@ public class DBHelper extends SQLiteOpenHelper {
         // Mejorar
         List<FoodRow> rows = new ArrayList<>();
         Cursor c = db.rawQuery("SELECT * FROM "+TABLE_NAME, null);
-        c.moveToFirst();
-        while(c!=null){
-            int id = c.getInt(0);
-            String foodname = c.getString(1);
-            String foodDescription = c.getString(2);
-            float foodPrice = c.getFloat(3);
-            byte[] image = c.getBlob(4);
-            FoodRow fr = new FoodRow(id,foodname,foodDescription,foodPrice,image);
-            rows.add(fr);
+        if(c.moveToFirst()){
+            do{
+                int id = c.getInt(0);
+                String foodname = c.getString(1);
+                String foodDescription = c.getString(2);
+                float foodPrice = c.getFloat(3);
+                //String image = c.getString(4);
+                FoodRow fr = new FoodRow(id,foodname,foodDescription,foodPrice,c.getBlob(4));
+                rows.add(fr);
+            }
+            while(c.moveToNext());
         }
         c.close();
         db.close();
         return rows;
+    }
+
+    public FoodRow Find(int id){
+        SQLiteDatabase db = getReadableDatabase();
+        FoodRow tmp = null;
+        String Filter = ID + " = ?";
+        String Args[]={Integer.toString(id)};
+        Cursor c = db.query(TABLE_NAME,null,Filter,Args,null,null,null);
+        if(c.moveToFirst()){
+            String n = c.getString(1);
+            String d = c.getString(2);
+            float p = c.getFloat(3);
+            tmp = new FoodRow(id,n,d,p,c.getBlob(4));
+        }
+        return tmp;
     }
 
 

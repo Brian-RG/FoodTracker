@@ -6,24 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".FoodView">
 
-    <ListView
-        android:id="@+id/Food_list"
-        android:layout_width="415dp"
-        android:layout_height="731dp"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="-2dp" />
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="59dp"
         android:clickable="true"
+        android:onClick="goToCreate"
         android:src="@android:drawable/ic_menu_add"
         app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/foodView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/foodView"
+        android:layout_width="422dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

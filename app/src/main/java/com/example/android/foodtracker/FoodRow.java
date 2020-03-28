@@ -1,18 +1,27 @@
 package com.example.android.foodtracker;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import java.util.BitSet;
+
 public class FoodRow {
     private int id;
     private String name;
     private String description;
     private float price;
-    private byte[] img;
+    private byte[] imgurl;
+
+    public FoodRow(){
+        this(-1,"","",-1,null);
+    }
 
     public FoodRow(int id, String name, String description, float price, byte[] img){
         this.id=id;
         this.name=name;
         this.description=description;
         this.price=price;
-        this.img=img;
+        this.imgurl=img;
     }
 
     public void setName(String newName){
@@ -25,7 +34,7 @@ public class FoodRow {
         this.price=newPrice;
     }
     public void setImg(byte[] newImg) {
-        this.img=newImg;
+        this.imgurl=newImg;
     }
 
     public int getId(){
@@ -41,6 +50,9 @@ public class FoodRow {
         return this.price;
     }
     public byte[] getImg(){
-        return this.img;
+        return this.imgurl;
+    }
+    public Bitmap getImgBitMap(){
+        return BitmapFactory.decodeByteArray(this.imgurl, 0, this.imgurl.length);
     }
 }
