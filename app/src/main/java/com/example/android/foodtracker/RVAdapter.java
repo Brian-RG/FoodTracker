@@ -1,5 +1,7 @@
 package com.example.android.foodtracker;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +28,13 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.FoodViewHolder>{
         holder.FoodName.setText(food.get(position).getName());
         holder.FoodPrice.setText("$" +food.get(position).getPrice()+"MXN");
         holder.FoodDescription.setText(food.get(position).getDescription());
-        holder.foodImage.setImageBitmap(food.get(position).getImgBitMap());
+        Bitmap img=food.get(position).getImgBitMap();
+        if(img!=null){
+            holder.foodImage.setImageBitmap(img);
+        }
+        else{
+            holder.foodImage.setImageResource(R.drawable.defaultimg);
+        }
         holder.FoodId.setText("#"+food.get(position).getId());
     }
 

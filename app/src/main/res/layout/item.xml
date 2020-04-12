@@ -19,8 +19,8 @@
 
         <ImageView
             android:id="@+id/food_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="16dp" />
@@ -31,7 +31,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/food_image"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            android:maxEms="12"
+            android:maxLines="1"
+            />
 
         <TextView
             android:id="@+id/food_description"
@@ -39,7 +42,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/food_name"
             android:layout_toRightOf="@id/food_image"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:maxEms="50"
+            android:maxLines="4"
+            android:ellipsize="end"
+            />
 
         <TextView
             android:id="@+id/food_price"

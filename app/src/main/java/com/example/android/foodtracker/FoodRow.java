@@ -52,7 +52,11 @@ public class FoodRow {
     public byte[] getImg(){
         return this.imgurl;
     }
+
     public Bitmap getImgBitMap(){
-        return BitmapFactory.decodeByteArray(this.imgurl, 0, this.imgurl.length);
+        if (this.imgurl!=null){
+            return BitmapFactory.decodeByteArray(this.imgurl, 0, this.imgurl.length);
+        }
+        return null;
     }
 }

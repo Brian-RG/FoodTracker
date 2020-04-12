@@ -5,12 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -26,6 +30,7 @@ public class CreateFood extends AppCompatActivity {
 //   private String name,description;
 //    float price;
     byte[] imagedata;
+    Bitmap bitmap;
 
     private EditText nameInp,descriptionInp,priceInp,imageInp;
 
@@ -37,6 +42,10 @@ public class CreateFood extends AppCompatActivity {
         nameInp = findViewById(R.id.nameInput);
         descriptionInp = findViewById(R.id.descriptionInput);
         priceInp = findViewById(R.id.priceInput);
+
+        BitmapDrawable bd = (BitmapDrawable) getResources().getDrawable(R.drawable.defaultimg);
+        bitmap = bd.getBitmap();
+        imagedata = getBitmapAsByteArray(bitmap);
     }
 
 
@@ -60,14 +69,16 @@ public class CreateFood extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             try {
                 final Uri imageUri = data.getData();
-                Bitmap bitmap =
+                bitmap =
                         MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 
                 //bitmap = Bitmap.createScaledBitmap(bitmap,60,80,false);
-                //Code to convert bitmap into BLOBç
+                //Code to convert bitmap into BLOB
+
                 imagedata = getBitmapAsByteArray(bitmap); // this is a function
 
-                Toast.makeText(this,imagedata.length+"",Toast.LENGTH_SHORT).show();
+                TextView image_status= findViewById(R.id.imageStatus);
+                image_status.setText("Image loaded succesfully");
                 //final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 //final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
             } catch (Exception e) {
@@ -82,7 +93,14 @@ public class CreateFood extends AppCompatActivity {
 
 
     public void addToDatabase(View v){
+
+        if(nameInp.getText().toString().isEmpty() && priceInp.getText().toString().isEmpty() ){
+            nameInp.setError("Food name is required");
+            priceInp.setError("Food price is required");
+        }
+        else{
         db.Insert(nameInp.getText().toString(),descriptionInp.getText().toString(),Float.parseFloat(priceInp.getText().toString()), imagedata);
         finish();
+        }
     }
 }
