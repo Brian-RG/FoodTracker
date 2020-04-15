@@ -58,6 +58,24 @@ public class RegistrationActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_LONG).show();
             return;
         }
+
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Registration successful!", Toast.LENGTH_LONG).show();
+                            progressBar.setVisibility(View.GONE);
+
+                            Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), "Registration failed! Please try again later", Toast.LENGTH_LONG).show();
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    }
+                });
     }
 
     private void initializeUI() {
