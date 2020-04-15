@@ -29,7 +29,6 @@ public class EditFoodActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_food);
         Intent opener = getIntent();
         foodId = Integer.parseInt(opener.getStringExtra("foodId"));
-        Log.wtf("id",""+foodId);
         //Initializing database
         db = new DBHelper(this);
 

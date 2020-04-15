@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goToFoodActivity(View v){
-        Intent FoodViewIntent = new Intent(this,FoodView.class);
+        Intent FoodViewIntent = new Intent(this,DailyFoodView.class);
         startActivity(FoodViewIntent);
     }
 }

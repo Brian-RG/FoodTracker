@@ -10,7 +10,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditFoodActivity"></activity>
+        <activity android:name=".EditDailyFood"></activity>
+        <activity android:name=".AddDailyFood" />
+        <activity android:name=".DailyFoodView" />
+        <activity android:name=".EditFoodActivity" />
         <activity android:name=".CreateFood" />
         <activity android:name=".FoodView" />
         <activity android:name=".MainActivity">
