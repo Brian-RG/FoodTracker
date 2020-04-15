@@ -18,4 +18,10 @@ public class MainActivity extends AppCompatActivity {
         Intent FoodViewIntent = new Intent(this,DailyFoodView.class);
         startActivity(FoodViewIntent);
     }
+
+    public void goToExpensesActivity(View v){
+        Intent ExpensesIntent = new Intent(this,ExpensesActivity.class);
+        startActivity(ExpensesIntent);
+    }
+
 }
