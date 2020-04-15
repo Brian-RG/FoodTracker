@@ -10,8 +10,8 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="217dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginTop="95dp"
+        android:layout_marginBottom="42dp"
         android:text="Account login"
         app:layout_constraintBottom_toTopOf="@+id/loginEmail"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,7 +22,7 @@
         android:id="@+id/loginEmail"
         android:layout_width="225dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="49dp"
+        android:layout_marginBottom="35dp"
         android:hint="Email"
         app:layout_constraintBottom_toTopOf="@+id/loginPassword"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,9 +31,9 @@
 
     <EditText
         android:id="@+id/loginPassword"
-        android:layout_width="221dp"
+        android:layout_width="225dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="45dp"
+        android:layout_marginBottom="54dp"
         android:hint="Password"
         android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/login"
@@ -45,10 +45,11 @@
         android:id="@+id/login"
         android:layout_width="192dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="225dp"
+        android:layout_marginBottom="126dp"
         android:text="Login"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textView6"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginPassword" />
 
@@ -61,5 +62,29 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/login" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginBottom="16dp"
+        android:text="New here?"
+        app:layout_constraintBottom_toTopOf="@+id/registerNow"
+        app:layout_constraintStart_toStartOf="@+id/registerNow"
+        app:layout_constraintTop_toBottomOf="@+id/login" />
+
+    <Button
+        android:id="@+id/registerNow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="133dp"
+        android:text="Register Now"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
