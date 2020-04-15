@@ -14,20 +14,18 @@
         android:theme="@style/AppTheme">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         <activity android:name=".EditDailyFood"></activity>
         <activity android:name=".AddDailyFood" />
         <activity android:name=".DailyFoodView" />
-=======
         <activity android:name=".Registration"></activity>
->>>>>>> Add activity for registration
-=======
-        <activity android:name=".LoginActivity"></activity>
         <activity android:name=".RegistrationActivity" />
->>>>>>> Rename activity and create login empty activity
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".LoginActivity" />
         <activity android:name=".EditFoodActivity" />
         <activity android:name=".CreateFood" />
         <activity android:name=".FoodView" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
