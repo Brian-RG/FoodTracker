@@ -4,14 +4,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class MainActivity extends AppCompatActivity {
+
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mAuth = FirebaseAuth.getInstance();
     }
 
     public void goToFoodActivity(View v){
@@ -22,6 +28,18 @@ public class MainActivity extends AppCompatActivity {
     public void goToExpensesActivity(View v){
         Intent ExpensesIntent = new Intent(this,ExpensesActivity.class);
         startActivity(ExpensesIntent);
+    }
+
+    public void goToRecommendations(View v){
+        Intent RecommendationsIntent = new Intent(this,FoodView.class);
+        startActivity(RecommendationsIntent);
+    }
+
+    public void signOut(View v){
+        mAuth.signOut();
+        Intent LoginAct = new Intent(this, LoginActivity.class);
+        startActivity(LoginAct);
+        finish();
     }
 
 }
