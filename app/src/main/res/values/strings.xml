@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Food Tracker</string>
+    <string name="title_activity_recommendations">RecommendationsActivity</string>
+    <string name="tab_text_1">Recommendations</string>
+    <string name="tab_text_2">My recommendations</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

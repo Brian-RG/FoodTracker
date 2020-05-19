@@ -67,7 +67,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.FoodViewHolder>{
     }
     List<FoodRow> food;
 
-    RVAdapter(List<FoodRow> food){
+    public RVAdapter(List<FoodRow> food){
         this.food = food;
     }
 }

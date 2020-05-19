@@ -89,7 +89,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 String foodDescription = c.getString(2);
                 float foodPrice = c.getFloat(3);
                 //String image = c.getString(4);
-                FoodRow fr = new FoodRow(id,foodname,foodDescription,foodPrice,c.getBlob(4));
+                FoodRow fr = new FoodRow(String.valueOf(id),foodname,foodDescription,foodPrice,c.getBlob(4));
                 rows.add(fr);
             }
             while(c.moveToNext());
@@ -109,7 +109,7 @@ public class DBHelper extends SQLiteOpenHelper {
             String n = c.getString(1);
             String d = c.getString(2);
             float p = c.getFloat(3);
-            tmp = new FoodRow(id,n,d,p,c.getBlob(4));
+            tmp = new FoodRow(String.valueOf(id),n,d,p,c.getBlob(4));
         }
         return tmp;
     }

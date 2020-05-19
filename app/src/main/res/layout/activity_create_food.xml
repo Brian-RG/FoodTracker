@@ -7,7 +7,7 @@
     tools:context=".CreateFood">
 
     <TextView
-        android:id="@+id/daily_foodNameView"
+        android:id="@+id/nameView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="19dp"
@@ -28,7 +28,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/daily_foodPriceView"
+        android:id="@+id/priceView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
@@ -52,7 +52,7 @@
         app:layout_constraintTop_toTopOf="@+id/priceView" />
 
     <Button
-        android:id="@+id/addnewDaily"
+        android:id="@+id/addButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="37dp"
@@ -65,7 +65,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/daily_nameInput"
+        android:id="@+id/nameInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="52dp"
@@ -78,7 +78,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/daily_priceInput"
+        android:id="@+id/priceInput"
         android:layout_width="69dp"
         android:layout_height="44dp"
         android:layout_marginStart="21dp"

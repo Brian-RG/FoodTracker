@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
     android:elevation="0dp"
-    android:onClick="editFoodRegister"
     app:cardBackgroundColor="@color/cardview_shadow_start_color"
     app:cardElevation="3dp"
     app:cardPreventCornerOverlap="false"

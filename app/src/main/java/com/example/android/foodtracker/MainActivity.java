@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goToRecommendations(View v){
-        Intent RecommendationsIntent = new Intent(this,FoodView.class);
+        Intent RecommendationsIntent = new Intent(this,RecommendationsActivity.class);
         startActivity(RecommendationsIntent);
     }
 
