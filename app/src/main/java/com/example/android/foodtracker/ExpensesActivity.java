@@ -1,12 +1,22 @@
 package com.example.android.foodtracker;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -20,6 +30,8 @@ public class ExpensesActivity extends AppCompatActivity {
     DailyFoodDB db;
     Calendar c;
     DatePickerDialog dpd;
+    FirebaseFirestore db2;
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +40,8 @@ public class ExpensesActivity extends AppCompatActivity {
         expensesLabel = findViewById(R.id.total_expenses);
         db = new DailyFoodDB(this);
         c=Calendar.getInstance();
+        db2 = FirebaseFirestore.getInstance();
+        context = getApplicationContext();
 
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
@@ -36,8 +50,26 @@ public class ExpensesActivity extends AppCompatActivity {
     }
 
     private void updateExpensesLabel(String date){
-        float expenses = getDailyExpenses(date);
-        expensesLabel.setText("$"+expenses+"MXN");
+        final float expenses = getDailyExpenses(date);
+        db2.collection("presupuesto")
+                .whereEqualTo("date", date).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                if(task.isSuccessful()){
+                    float budget = 0.0f;
+                    for(QueryDocumentSnapshot document : task.getResult()){
+                        budget = Float.parseFloat(document.getData().get("budget").toString());
+                    }
+
+                    expensesLabel.setText("$"+(budget - expenses)+"MXN");
+
+                }
+                else{
+                    Log.wtf("Error",task.getException());
+                }
+            }
+        });
     }
 
     private float getDailyExpenses(String date){

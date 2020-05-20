@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
@@ -37,6 +39,7 @@ public class DailyFoodView extends AppCompatActivity {
     TextView emptyV, available_budget;
     EditText totalBudget;
     Button confirmBudget;
+    Context context;
 
     Calendar c;
     DatePickerDialog dpd;
@@ -56,6 +59,9 @@ public class DailyFoodView extends AppCompatActivity {
         available_budget = findViewById(R.id.available_budget);
         totalBudget = findViewById(R.id.Budget_Edit_Field);
         confirmBudget = findViewById(R.id.confirm_budget);
+
+        context = getApplicationContext();
+        db = FirebaseFirestore.getInstance();
 
 
         emptyV.setVisibility(View.GONE);
@@ -120,17 +126,32 @@ public class DailyFoodView extends AppCompatActivity {
 
     }
     public void setBudget(View v){
-        budget = "$" + totalBudget.getText().toString();
+        budget =  totalBudget.getText().toString();
         available_budget.setText(budget);
 
         // Update one field, creating the document if it does not already exist.
         Map<String, String> data = new HashMap<>();
         data.put("budget", totalBudget.getText().toString());
-        String datekey = dateSelection.replace("/", "");
-        Toast.makeText(this, datekey, Toast.LENGTH_SHORT).show();
 
-        /*db.collection("presupuesto").document(datekey)
-                .set(data, SetOptions.merge());*/
+        Map<String,Object> Budget_Record = new HashMap<>();
+        Budget_Record.put("date", dateSelection );
+        Budget_Record.put("budget", budget);
+        db.collection("presupuesto")
+                .add(Budget_Record)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(context,"Budget added successfully!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(context,"Something went wrong adding the recommendation", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     public void editFood(View v){
