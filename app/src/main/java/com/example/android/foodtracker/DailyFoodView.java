@@ -9,8 +9,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
+
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -22,7 +26,9 @@ public class DailyFoodView extends AppCompatActivity {
 
     DailyFoodDB mydb;
     RecyclerView foodList;
-    TextView emptyV;
+    TextView emptyV, available_budget;
+    EditText totalBudget;
+    Button confirmBudget;
 
     Calendar c;
     DatePickerDialog dpd;
@@ -36,6 +42,10 @@ public class DailyFoodView extends AppCompatActivity {
         c = Calendar.getInstance();
         emptyV = findViewById(R.id.emptyView);
         foodList = findViewById(R.id.daily_food_list);
+        available_budget = findViewById(R.id.available_budget);
+        totalBudget = findViewById(R.id.Budget_Edit_Field);
+        confirmBudget = findViewById(R.id.confirm_budget);
+
 
         emptyV.setVisibility(View.GONE);
         Date today = new Date();
