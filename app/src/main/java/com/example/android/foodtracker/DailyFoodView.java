@@ -1,5 +1,6 @@
 package com.example.android.foodtracker;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,13 +14,20 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class DailyFoodView extends AppCompatActivity {
@@ -33,6 +41,9 @@ public class DailyFoodView extends AppCompatActivity {
     Calendar c;
     DatePickerDialog dpd;
     String dateSelection;
+    String budget;
+
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +118,19 @@ public class DailyFoodView extends AppCompatActivity {
 
         dpd.show();
 
+    }
+    public void setBudget(View v){
+        budget = "$" + totalBudget.getText().toString();
+        available_budget.setText(budget);
+
+        // Update one field, creating the document if it does not already exist.
+        Map<String, String> data = new HashMap<>();
+        data.put("budget", totalBudget.getText().toString());
+        String datekey = dateSelection.replace("/", "");
+        Toast.makeText(this, datekey, Toast.LENGTH_SHORT).show();
+
+        /*db.collection("presupuesto").document(datekey)
+                .set(data, SetOptions.merge());*/
     }
 
     public void editFood(View v){
