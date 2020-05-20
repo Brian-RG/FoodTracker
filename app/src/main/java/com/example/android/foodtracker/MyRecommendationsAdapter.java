@@ -1,25 +1,26 @@
 package com.example.android.foodtracker;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.android.foodtracker.ui.main.My_RecommendationsFragment;
+
 import java.util.List;
 
-public class RVAdapter extends RecyclerView.Adapter<RVAdapter.FoodViewHolder>{
+public class MyRecommendationsAdapter extends RecyclerView.Adapter<MyRecommendationsAdapter.FoodViewHolder>{
     @Override
     public FoodViewHolder onCreateViewHolder(ViewGroup vw, int viewType) {
         View v = LayoutInflater.from(vw.getContext()).inflate(R.layout.item, vw, false);
-        FoodViewHolder pvh = new FoodViewHolder(v);
+        FoodViewHolder pvh = new FoodViewHolder(v, this.elementListener);
         return pvh;
     }
 
@@ -36,6 +37,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.FoodViewHolder>{
             holder.foodImage.setImageResource(R.drawable.defaultimg);
         }
         holder.FoodId.setText("#"+food.get(position).getId());
+
     }
 
     @Override
@@ -48,14 +50,17 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.FoodViewHolder>{
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public static class FoodViewHolder extends RecyclerView.ViewHolder{
+    public static class FoodViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CardView cv;
         TextView FoodId;
         TextView FoodName;
         TextView FoodDescription;
         TextView FoodPrice;
         ImageView foodImage;
-        public FoodViewHolder(View viewItem){
+        OnElementListener listener;
+
+
+        public FoodViewHolder(View viewItem , OnElementListener listener){
             super(viewItem);
             cv = viewItem.findViewById(R.id.cv);
             FoodName = viewItem.findViewById(R.id.food_name);
@@ -63,11 +68,24 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.FoodViewHolder>{
             foodImage = viewItem.findViewById(R.id.food_image);
             FoodDescription = viewItem.findViewById(R.id.food_description);
             FoodId = viewItem.findViewById(R.id.food_id);
+
+            this.listener=listener;
+            viewItem.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            this.listener.onElementClick(getAdapterPosition());
         }
     }
     List<FoodRow> food;
-
-    public RVAdapter(List<FoodRow> food){
+    OnElementListener elementListener;
+    public MyRecommendationsAdapter(List<FoodRow> food, OnElementListener mElementListener){
         this.food = food;
+        this.elementListener = mElementListener;
+    }
+
+    public interface OnElementListener{
+        void onElementClick(int position);
     }
 }

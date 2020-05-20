@@ -1,7 +1,6 @@
 package com.example.android.foodtracker.ui.main;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,11 +13,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import com.example.android.foodtracker.DetailedRecommendation;
 import com.example.android.foodtracker.FoodRow;
 import com.example.android.foodtracker.R;
-import com.example.android.foodtracker.RVAdapter;
+import com.example.android.foodtracker.RecommendationsAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -33,12 +32,10 @@ import java.util.List;
  * Use the {@link RecommendationsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RecommendationsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
+public class RecommendationsFragment extends Fragment implements RecommendationsAdapter.onFoodListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private List<FoodRow> recomendaciones;
     RecyclerView recommendations_list;
@@ -54,7 +51,6 @@ public class RecommendationsFragment extends Fragment {
      *
      * @return A new instance of fragment RecommendationsFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static RecommendationsFragment newInstance(String username) {
         RecommendationsFragment fragment = new RecommendationsFragment();
         Bundle args = new Bundle();
@@ -63,14 +59,7 @@ public class RecommendationsFragment extends Fragment {
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            Log.wtf("user:",mParam1);
-        }
-        db = FirebaseFirestore.getInstance();
+    private void getData(){
         recomendaciones = new ArrayList<FoodRow>();
         db.collection("recomendaciones")
                 .get()
@@ -92,7 +81,7 @@ public class RecommendationsFragment extends Fragment {
                                 }
                                 recomendaciones.add(new FoodRow(document.getId(),name,description,price,imagedata));
                             }
-                            RVAdapter adapter = new RVAdapter(recomendaciones);
+                            RecommendationsAdapter adapter = new RecommendationsAdapter(recomendaciones, RecommendationsFragment.this);
                             recommendations_list.setAdapter(adapter);
                         }
                         else{
@@ -100,7 +89,17 @@ public class RecommendationsFragment extends Fragment {
                         }
                     }
                 });
+    }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            Log.wtf("user:",mParam1);
+        }
+        db = FirebaseFirestore.getInstance();
+        this.getData();
     }
 
     @Override
@@ -112,5 +111,17 @@ public class RecommendationsFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         recommendations_list.setLayoutManager(llm);
         return root;
+    }
+
+    @Override
+    public void onFoodClick(int position) {
+        Intent seeRecord = new Intent(getActivity(), DetailedRecommendation.class);
+        FoodRow current = recomendaciones.get(position);
+        seeRecord.putExtra("name", current.getName());
+        seeRecord.putExtra("description", current.getDescription());
+        seeRecord.putExtra("price",current.getPrice());
+        seeRecord.putExtra("img",current.getImg());
+        startActivity(seeRecord);
+
     }
 }

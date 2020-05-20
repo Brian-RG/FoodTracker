@@ -12,10 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".DetailedRecommendation"></activity>
         <activity
             android:name=".RecommendationsActivity"
             android:label="@string/title_activity_recommendations"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ExpensesActivity" />
         <activity android:name=".EditDailyFood" />
         <activity android:name=".AddDailyFood" />
