@@ -115,6 +115,11 @@ public class CreateFood extends AppCompatActivity {
             priceInp.setError("Foor price is required!");
             return;
         }
+        nameInp.setEnabled(false);
+        priceInp.setEnabled(false);
+        descriptionInp.setEnabled(false);
+        this.findViewById(R.id.Food_button).setEnabled(false);
+        image_as_string= Base64.encodeToString(imagedata,Base64.DEFAULT);
         Map<String,Object> Food_Record = new HashMap<>();
         image_as_string = Base64.encodeToString(imagedata,Base64.DEFAULT);
         Food_Record.put("NAME", nameInp.getText().toString());
@@ -129,6 +134,7 @@ public class CreateFood extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Toast.makeText(context,"Recommendation added successfully!", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -138,7 +144,6 @@ public class CreateFood extends AppCompatActivity {
                         Toast.makeText(context,"Something went wrong adding the recommendation", Toast.LENGTH_SHORT).show();
                     }
                 });
-        finish();
     }
 
     /*
