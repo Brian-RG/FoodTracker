@@ -69,8 +69,8 @@ public class EditFoodActivity extends AppCompatActivity {
         nameEdit.setText(currentName);
         descriptionEdit.setText(currentDescription);
         priceEdit.setText(currentPrice+"");
-        Bitmap image = BitmapFactory.decodeByteArray(opener.getByteArrayExtra("img"),0 , opener.getByteArrayExtra("img").length);
-        foodImage.setImageBitmap(image);
+        //Bitmap image = BitmapFactory.decodeByteArray(opener.getByteArrayExtra("img"),0 , opener.getByteArrayExtra("img").length);
+        //foodImage.setImageBitmap(image);
     }
 
     public void deleteFoodRegister(View view){
@@ -78,7 +78,6 @@ public class EditFoodActivity extends AppCompatActivity {
         descriptionEdit.setEnabled(false);
         priceEdit.setEnabled(false);
         foodImage.setEnabled(false);
-        findViewById(R.id.Upload_new_Image).setEnabled(false);
 
         docRef.delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -106,6 +105,13 @@ public class EditFoodActivity extends AppCompatActivity {
             priceEdit.setError("Can't be empty!");
             return ;
         }
+
+        nameEdit.setEnabled(false);
+        descriptionEdit.setEnabled(false);
+        priceEdit.setEnabled(false);
+        foodImage.setEnabled(false);
+        findViewById(R.id.save_button).setEnabled(false);
+        findViewById(R.id.delete_button).setEnabled(false);
 
         db.runTransaction(new Transaction.Function<Void>() {
             @Override

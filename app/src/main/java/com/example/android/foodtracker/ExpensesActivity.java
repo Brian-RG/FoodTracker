@@ -54,6 +54,8 @@ public class ExpensesActivity extends AppCompatActivity {
 
     private void updateExpensesLabel(String date){
         final float expenses = getDailyExpenses(date);
+        final TextView exp_label = findViewById(R.id.exp_label);
+        exp_label.setText(String.valueOf(expenses));
         db2.collection("presupuesto")
                 .whereEqualTo("date", date).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -64,8 +66,14 @@ public class ExpensesActivity extends AppCompatActivity {
                     for(QueryDocumentSnapshot document : task.getResult()){
                         budget = Float.parseFloat(document.getData().get("budget").toString());
                     }
-
-                    expensesLabel.setText("$"+(budget - expenses)+"MXN");
+                    float remaining = budget - expenses;
+                    /*if(remaining > 0){
+                        expensesLabel.setTextColor(R.color.green);
+                    }
+                    else{
+                        expensesLabel.setTextColor(R.color.red);
+                    }*/
+                    expensesLabel.setText("$"+remaining+"MXN");
 
                 }
                 else{
