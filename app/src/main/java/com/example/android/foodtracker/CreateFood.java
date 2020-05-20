@@ -92,7 +92,6 @@ public class CreateFood extends AppCompatActivity {
 
                 imagedata = getBitmapAsByteArray(bitmap); // this is a function
 
-
                 TextView image_status= findViewById(R.id.imageStatus);
                 image_status.setText("Image loaded succesfully");
                 //final InputStream imageStream = getContentResolver().openInputStream(imageUri);
@@ -122,6 +121,7 @@ public class CreateFood extends AppCompatActivity {
         this.findViewById(R.id.Food_button).setEnabled(false);
         image_as_string= Base64.encodeToString(imagedata,Base64.DEFAULT);
         Map<String,Object> Food_Record = new HashMap<>();
+        image_as_string = Base64.encodeToString(imagedata,Base64.DEFAULT);
         Food_Record.put("NAME", nameInp.getText().toString());
         Food_Record.put("DESCRIPTION", descriptionInp.getText().toString());
         Food_Record.put("PRICE", Float.parseFloat(priceInp.getText().toString()));
