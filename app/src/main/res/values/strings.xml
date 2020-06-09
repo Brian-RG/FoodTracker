@@ -3,6 +3,7 @@
     <string name="title_activity_recommendations">RecommendationsActivity</string>
     <string name="tab_text_1">Recommendations</string>
     <string name="tab_text_2">My recommendations</string>
+    <string name="tab_text_3">My favorites</string>
 
 
 </resources>
