@@ -13,9 +13,12 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -35,6 +38,9 @@ public class ExpensesActivity extends AppCompatActivity {
     ListView expenses;
     FirebaseFirestore db2;
     Context context;
+    private FirebaseAuth mAuth;
+    FirebaseUser currentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,18 +52,21 @@ public class ExpensesActivity extends AppCompatActivity {
         this.expenses = findViewById(R.id.expensesList);
         db2 = FirebaseFirestore.getInstance();
         context = getApplicationContext();
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
         date = formatter.format(new Date());
-        updateExpensesLabel(date);
+        updateExpensesLabel(date, currentUser.getUid());
     }
 
-    private void updateExpensesLabel(String date){
+    private void updateExpensesLabel(String date, String user_id){
         final float expenses = getDailyExpenses(date);
         final TextView exp_label = findViewById(R.id.exp_label);
         exp_label.setText("Total spent: $" + String.valueOf(expenses) + " MXN");
         db2.collection("presupuesto")
-                .whereEqualTo("date", date).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .whereEqualTo("date", date)
+                .whereEqualTo("user_id", user_id).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
@@ -66,6 +75,7 @@ public class ExpensesActivity extends AppCompatActivity {
                     for(QueryDocumentSnapshot document : task.getResult()){
                         budget = Float.parseFloat(document.getData().get("budget").toString());
                     }
+                    Toast.makeText(context, "KAROL " + String.valueOf(budget), Toast.LENGTH_SHORT).show();
                     float remaining = budget - expenses;
                     if(remaining > 0){
                         expensesLabel.setTextColor(getResources().getColor(R.color.green));
@@ -112,7 +122,7 @@ public class ExpensesActivity extends AppCompatActivity {
                 c.set(year,month,dayOfMonth);
                 SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
                 date= format.format(c.getTime());
-                updateExpensesLabel(date);
+                updateExpensesLabel(date, currentUser.getUid());
             }
         },year,month,day);
 
