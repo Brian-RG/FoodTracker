@@ -20,6 +20,8 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
@@ -47,6 +49,8 @@ public class DailyFoodView extends AppCompatActivity {
     String budget;
 
     FirebaseFirestore db;
+    private FirebaseAuth mAuth;
+    FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +63,9 @@ public class DailyFoodView extends AppCompatActivity {
         available_budget = findViewById(R.id.available_budget);
         totalBudget = findViewById(R.id.Budget_Edit_Field);
         confirmBudget = findViewById(R.id.confirm_budget);
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+
 
         context = getApplicationContext();
         db = FirebaseFirestore.getInstance();
@@ -127,7 +134,9 @@ public class DailyFoodView extends AppCompatActivity {
     }
     public void setBudget(View v){
         budget =  totalBudget.getText().toString();
+        Toast.makeText(context,"Budget IS: " + budget, Toast.LENGTH_SHORT).show();
         available_budget.setText(budget);
+        String user_id = currentUser.getUid();
 
         // Update one field, creating the document if it does not already exist.
         Map<String, String> data = new HashMap<>();
@@ -136,6 +145,7 @@ public class DailyFoodView extends AppCompatActivity {
         Map<String,Object> Budget_Record = new HashMap<>();
         Budget_Record.put("date", dateSelection );
         Budget_Record.put("budget", budget);
+        Budget_Record.put("user_id", user_id);
         db.collection("presupuesto")
                 .add(Budget_Record)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
