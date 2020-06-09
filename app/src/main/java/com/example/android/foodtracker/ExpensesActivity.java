@@ -55,7 +55,7 @@ public class ExpensesActivity extends AppCompatActivity {
     private void updateExpensesLabel(String date){
         final float expenses = getDailyExpenses(date);
         final TextView exp_label = findViewById(R.id.exp_label);
-        exp_label.setText(String.valueOf(expenses));
+        exp_label.setText("Total spent: $" + String.valueOf(expenses) + " MXN");
         db2.collection("presupuesto")
                 .whereEqualTo("date", date).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override

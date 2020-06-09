@@ -149,7 +149,7 @@ public class DailyFoodView extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         e.printStackTrace();
-                        Toast.makeText(context,"Something went wrong adding the recommendation", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context,"Something went wrong adding the budget.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
