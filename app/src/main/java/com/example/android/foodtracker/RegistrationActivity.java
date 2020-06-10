@@ -71,8 +71,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private static final int MY_CAMERA_PERMISSION_CODE = 100, MY_READ_WRITE_PERMISSION_CODE = 101;
 
-    private static final int MY_CAMERA_PERMISSION_CODE = 100, MY_READ_WRITE_PERMISSION_CODE = 101;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,8 +136,6 @@ public class RegistrationActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Enter age", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        age = Integer.parseInt(ageTxt);
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
