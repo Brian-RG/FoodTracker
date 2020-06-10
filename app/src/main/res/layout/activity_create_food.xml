@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateFood">
+
+    <TextView
+        android:id="@+id/nameView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="19dp"
+        android:layout_marginLeft="19dp"
+        android:layout_marginTop="67dp"
+        android:text="Name:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/descriptionView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="19dp"
+        android:layout_marginLeft="19dp"
+        android:text="Description:"
+        app:layout_constraintBaseline_toBaselineOf="@+id/descriptionInput"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/priceView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="5dp"
+        android:text="Price:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/priceInput" />
+
+    <TextView
+        android:id="@+id/imageV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="136dp"
+        android:layout_marginBottom="135dp"
+        android:text="Image"
+        app:layout_constraintBottom_toTopOf="@+id/addButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/priceView" />
+
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="37dp"
+        android:background="@color/colorPrimary"
+        android:onClick="addToDatabase"
+        android:text="Add"
+        android:textColor="@color/design_default_color_on_primary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/nameInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:ems="10"
+        android:hint="Name"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/descriptionInput"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/priceInput"
+        android:layout_width="69dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginLeft="21dp"
+        android:layout_marginTop="299dp"
+        android:layout_marginBottom="299dp"
+        android:ems="10"
+        android:hint="$MXN"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toBottomOf="@+id/addButton"
+        app:layout_constraintStart_toEndOf="@+id/descriptionView"
+        app:layout_constraintTop_toTopOf="@+id/nameInput" />
+
+    <EditText
+        android:id="@+id/descriptionInput"
+        android:layout_width="215dp"
+        android:layout_height="151dp"
+        android:layout_marginStart="23dp"
+        android:layout_marginLeft="23dp"
+        android:layout_marginTop="66dp"
+        android:layout_marginBottom="67dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Description"
+        android:inputType="textMultiLine"
+        app:layout_constraintBottom_toTopOf="@+id/priceInput"
+        app:layout_constraintStart_toEndOf="@+id/descriptionView"
+        app:layout_constraintTop_toTopOf="@+id/nameView" />
+
+    <Button
+        android:id="@+id/Food_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="7dp"
+        android:layout_marginRight="7dp"
+        android:layout_marginBottom="15dp"
+        android:background="@color/colorPrimary"
+        android:onClick="loadImage"
+        android:text="load"
+        android:textColor="@color/design_default_color_on_primary"
+        app:layout_constraintBottom_toTopOf="@+id/imageStatus"
+        app:layout_constraintEnd_toEndOf="@+id/imageStatus" />
+
+    <TextView
+        android:id="@+id/imageStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="30dp"
+        android:text="No image loaded"
+        app:layout_constraintStart_toEndOf="@+id/imageV"
+        app:layout_constraintTop_toBottomOf="@+id/imageV" />
+
+    <Spinner
+        android:id="@+id/categorySpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/priceInput"
+        app:layout_constraintBottom_toBottomOf="@id/priceInput"
+        app:layout_constraintTop_toTopOf="@id/priceInput"
+        android:layout_marginLeft="50dp"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditDailyFood">
+
+    <EditText
+        android:id="@+id/Daily_Name_Edit_Field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Daily_NameLabelEdit"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="47dp"
+        android:layout_marginBottom="5dp"
+        android:ems="10"
+        android:hint="Food Name"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/Daily_NameLabelEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="183dp"
+        android:layout_marginBottom="5dp"
+        android:text="Food Name" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Price"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/Daily_Name_Edit_Field"
+        android:layout_margin="5dp"
+        />
+
+    <EditText
+        android:id="@+id/Daily_Price_Edit_Field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="$MXN"
+        android:inputType="numberDecimal"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/textView4"
+        android:layout_margin="5dp"
+        />
+
+    <Button
+        android:id="@+id/save_button_daily"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="105dp"
+        android:layout_marginBottom="106dp"
+        android:background="@android:color/holo_green_dark"
+        android:onClick="updateFood"
+        android:text="Save"
+        android:textColor="@color/design_default_color_on_primary" />
+
+    <Button
+        android:id="@+id/delete_button_daily"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="100dp"
+        android:layout_marginBottom="106dp"
+        android:background="@color/design_default_color_error"
+        android:onClick="deleteFood"
+        android:text="Delete"
+        android:textColor="@color/design_default_color_on_primary" />
+
+</RelativeLayout>

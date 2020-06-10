@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditFoodActivity">
+
+    <EditText
+        android:id="@+id/Name_Edit_Field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Food Name"
+        android:inputType="textPersonName"
+        android:layout_below="@id/NameLabelEdit"
+        android:layout_centerInParent="true"
+        android:layout_margin="5dp"
+        />
+    <TextView
+        android:id="@+id/NameLabelEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Food Name"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="5dp"
+        />
+
+    <TextView
+        android:id="@+id/Description_edit_Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:layout_below="@id/Name_Edit_Field"
+        android:layout_centerInParent="true"
+        android:layout_margin="5dp"
+        />
+
+    <EditText
+        android:id="@+id/Description_Edit_Field"
+        android:layout_width="wrap_content"
+        android:layout_height="81dp"
+        android:layout_below="@id/Description_edit_Label"
+        android:layout_centerInParent="true"
+        android:layout_margin="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Description"
+        android:inputType="textMultiLine" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Price"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/Description_Edit_Field"
+        android:layout_margin="5dp"
+        />
+
+    <EditText
+        android:id="@+id/Price_Edit_Field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="$MXN"
+        android:inputType="numberDecimal"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/textView4"
+        android:layout_margin="5dp"
+        />
+
+    <ImageView
+        android:id="@+id/Image_Edit"
+        android:layout_width="242dp"
+        android:layout_height="151dp"
+        android:layout_below="@id/Price_Edit_Field"
+        android:layout_centerInParent="true"
+        android:layout_margin="5dp"
+        />
+
+    <Button
+        android:id="@+id/Upload_new_Image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:onClick="changeImage"
+        android:text="Change"
+        android:textColor="@color/design_default_color_on_primary"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/Image_Edit"
+        android:layout_margin="5dp"
+        />
+
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_green_dark"
+        android:onClick="updateFoodRegister"
+        android:text="Save"
+        android:textColor="@color/design_default_color_on_primary"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="100dp"
+        android:layout_marginBottom="20dp"
+        />
+
+    <Button
+        android:id="@+id/delete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/design_default_color_error"
+        android:onClick="deleteFoodRegister"
+        android:text="Delete"
+        android:textColor="@color/design_default_color_on_primary"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="100dp"
+        android:layout_marginBottom="20dp"
+        />
+
+    <TextView
+        android:id="@+id/Image_label_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Image"
+        android:layout_toLeftOf="@id/Image_Edit"
+        android:layout_centerInParent="true"
+        android:layout_margin="7dp"
+        />
+
+</RelativeLayout>

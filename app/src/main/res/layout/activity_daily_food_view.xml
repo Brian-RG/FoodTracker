@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DailyFoodView">
+
+    <Button
+        android:id="@+id/select_date_button"
+        android:layout_width="79dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="80dp"
+        android:background="@color/colorPrimary"
+        android:onClick="selectDate"
+        android:text="SELECT DATE"
+        android:textColor="@color/design_default_color_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/emptyView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NO REGISTERS IN THIS DAY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addDailyFood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="80dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="gotoAddDailyFood"
+        android:src="@android:drawable/ic_menu_add"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/daily_food_list"
+        android:layout_width="wrap_content"
+        android:layout_height="380dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="7dp"
+        app:layout_constraintBottom_toTopOf="@id/addDailyFood"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/available_budget" />
+
+    <EditText
+        android:id="@+id/Budget_Edit_Field"
+        android:layout_width="85dp"
+        android:layout_height="36dp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="40dp"
+        android:ems="5"
+        android:gravity="center"
+        android:hint="$MXN"
+        android:inputType="numberDecimal"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/confirm_budget"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/total_budget_label" />
+
+    <TextView
+        android:id="@+id/available_budget_text_label"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="9dp"
+        android:gravity="center"
+        android:text="Total budget"
+        app:layout_constraintBottom_toTopOf="@+id/available_budget"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/available_budget"
+        android:layout_width="158dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="14dp"
+        android:ems="10"
+        android:gravity="center"
+        android:text="Budget not set"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/daily_food_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/available_budget_text_label" />
+
+    <TextView
+        android:id="@+id/total_budget_label"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="Today's budget:"
+        app:layout_constraintBottom_toBottomOf="@+id/select_date_button"
+        app:layout_constraintStart_toStartOf="@+id/Budget_Edit_Field"
+        app:layout_constraintTop_toTopOf="@+id/select_date_button"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/confirm_budget"
+        android:layout_width="89dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:onClick="setBudget"
+        android:text="Confirm"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Budget_Edit_Field"
+        app:layout_constraintVertical_bias="0.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
