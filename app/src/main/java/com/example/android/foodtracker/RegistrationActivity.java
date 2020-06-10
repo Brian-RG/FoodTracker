@@ -17,6 +17,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -55,6 +57,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private FloatingActionButton imageBtn;
     private ImageView profileImage;
+
     Context context;
 
     private Uri selectedImage;
@@ -65,6 +68,8 @@ public class RegistrationActivity extends AppCompatActivity {
     private FirebaseFirestore db;
 
     String imgUri = null;
+
+    private static final int MY_CAMERA_PERMISSION_CODE = 100, MY_READ_WRITE_PERMISSION_CODE = 101;
 
     private static final int MY_CAMERA_PERMISSION_CODE = 100, MY_READ_WRITE_PERMISSION_CODE = 101;
 
@@ -105,7 +110,6 @@ public class RegistrationActivity extends AppCompatActivity {
         name = nameTV.getText().toString();
         ageTxt = ageTV.getText().toString();
 
-
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(getApplicationContext(), "Enter email", Toast.LENGTH_SHORT).show();
             progressBar.setVisibility(View.GONE);
@@ -126,6 +130,16 @@ public class RegistrationActivity extends AppCompatActivity {
             progressBar.setVisibility(View.GONE);
             return;
         }
+        if (TextUtils.isEmpty(name)) {
+            Toast.makeText(getApplicationContext(), "Enter name", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (TextUtils.isEmpty(ageTxt)) {
+            Toast.makeText(getApplicationContext(), "Enter age", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        age = Integer.parseInt(ageTxt);
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
