@@ -2,15 +2,31 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.android.foodtracker">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FoodView"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".DetailedRecommendation"></activity>
+        <activity
+            android:name=".RecommendationsActivity"
+            android:label="@string/title_activity_recommendations"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ExpensesActivity" />
+        <activity android:name=".EditDailyFood" />
+        <activity android:name=".AddDailyFood" />
+        <activity android:name=".DailyFoodView" />
+        <activity android:name=".RegistrationActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".EditFoodActivity" />
+        <activity android:name=".CreateFood" />
+        <activity android:name=".FoodView" />
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
