@@ -74,6 +74,7 @@ public class ExpensesActivity extends AppCompatActivity {
                     float budget = 0.0f;
                     for(QueryDocumentSnapshot document : task.getResult()){
                         budget = Float.parseFloat(document.getData().get("budget").toString());
+                        break;
                     }
                     float remaining = budget - expenses;
                     if(remaining > 0){
