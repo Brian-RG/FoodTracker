@@ -67,12 +67,12 @@ public class ExpensesActivity extends AppCompatActivity {
                         budget = Float.parseFloat(document.getData().get("budget").toString());
                     }
                     float remaining = budget - expenses;
-                    /*if(remaining > 0){
-                        expensesLabel.setTextColor(R.color.green);
+                    if(remaining > 0){
+                        expensesLabel.setTextColor(getResources().getColor(R.color.green));
                     }
                     else{
-                        expensesLabel.setTextColor(R.color.red);
-                    }*/
+                        expensesLabel.setTextColor(getResources().getColor(R.color.red));
+                    }
                     expensesLabel.setText("$"+remaining+"MXN");
 
                 }

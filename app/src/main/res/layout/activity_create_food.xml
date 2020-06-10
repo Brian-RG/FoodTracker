@@ -132,4 +132,14 @@
         android:text="No image loaded"
         app:layout_constraintStart_toEndOf="@+id/imageV"
         app:layout_constraintTop_toBottomOf="@+id/imageV" />
+
+    <Spinner
+        android:id="@+id/categorySpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/priceInput"
+        app:layout_constraintBottom_toBottomOf="@id/priceInput"
+        app:layout_constraintTop_toTopOf="@id/priceInput"
+        android:layout_marginLeft="50dp"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
