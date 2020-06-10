@@ -27,19 +27,25 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link My_RecommendationsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class My_RecommendationsFragment extends Fragment implements MyRecommendationsAdapter.OnElementListener {
+public class My_RecommendationsFragment extends Fragment implements MyRecommendationsAdapter.OnElementListener, MyRecommendationsAdapter.ElementLikeListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
 
@@ -51,13 +57,42 @@ public class My_RecommendationsFragment extends Fragment implements MyRecommenda
     FirebaseFirestore db;
     public SwipeRefreshLayout swr;
     TextView txt;
+    DocumentReference userfavorites;
+    boolean hasFavs;
+
 
     public My_RecommendationsFragment() {
         // Required empty public constructor
     }
 
+    private ArrayList<String> getUsersFavs(){
+        final ArrayList<String> userFavs = new ArrayList<String>();
+        String uid = FirebaseAuth.getInstance().getUid();
+        userfavorites = db.collection("favoritos").document(uid);
+        userfavorites.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot document = task.getResult();
+
+                    if((hasFavs=document.exists())){
+                        userFavs.addAll((ArrayList<String>) document.get("favs"));
+                    }
+                    else{
+                        Log.wtf("Document", "no exists");
+                    }
+                }
+                else{
+                    Log.wtf("Something", "failed");
+                }
+            }
+        });
+        return userFavs;
+    }
+
 
     private void getData(){
+        final ArrayList<String> favs= getUsersFavs();
         mis_recomendaciones = new ArrayList<FoodRow>();
         db.collection("recomendaciones")
                 .whereEqualTo("USERID", FirebaseAuth.getInstance().getUid())
@@ -88,12 +123,12 @@ public class My_RecommendationsFragment extends Fragment implements MyRecommenda
                                 txt.setVisibility(View.VISIBLE);
                             }
 
-                            MyRecommendationsAdapter adapter = new MyRecommendationsAdapter(mis_recomendaciones, My_RecommendationsFragment.this);
+                            MyRecommendationsAdapter adapter = new MyRecommendationsAdapter(mis_recomendaciones, My_RecommendationsFragment.this, favs, My_RecommendationsFragment.this);
                             lista_recomendaciones.setAdapter(adapter);
                             swr.setRefreshing(false);
                         }
                         else{
-                            Log.wtf("Error",task.getException());
+                            Log.wtf("Error from my:",task.getException());
                         }
                     }
                 });
@@ -116,7 +151,7 @@ public class My_RecommendationsFragment extends Fragment implements MyRecommenda
         }
         db = FirebaseFirestore.getInstance();
 
-        this.getData();
+
     }
 
     @Override
@@ -142,7 +177,9 @@ public class My_RecommendationsFragment extends Fragment implements MyRecommenda
         lista_recomendaciones = root.findViewById(R.id.MyRecommendations);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         lista_recomendaciones.setLayoutManager(llm);
+        lista_recomendaciones.setAdapter(new MyRecommendationsAdapter(new ArrayList<FoodRow>(), this, new ArrayList<String>(), this));
 
+        this.getData();
         return root;
     }
 
@@ -168,5 +205,28 @@ public class My_RecommendationsFragment extends Fragment implements MyRecommenda
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
 
+    }
+
+    @Override
+    public void onElementLike(int position, boolean value) {
+        String foodId = mis_recomendaciones.get(position).getId();
+        if(value){
+            if(hasFavs){
+                userfavorites.update("favs", FieldValue.arrayUnion(foodId));
+            }
+            else{
+                Map<String,Object> data = new HashMap<>();
+                data.put("favs", Arrays.asList(foodId));
+                userfavorites.set(data);
+                hasFavs=true;
+            }
+            db.collection("recomendaciones").document(foodId).update("LIKES", FieldValue.increment(1));
+        }
+        else{
+            if(hasFavs){
+                userfavorites.update("favs",FieldValue.arrayRemove(foodId));
+                db.collection("recomendaciones").document(foodId).update("LIKES", FieldValue.increment(-1));
+            }
+        }
     }
 }
