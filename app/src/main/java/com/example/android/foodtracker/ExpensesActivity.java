@@ -13,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -75,7 +74,6 @@ public class ExpensesActivity extends AppCompatActivity {
                     for(QueryDocumentSnapshot document : task.getResult()){
                         budget = Float.parseFloat(document.getData().get("budget").toString());
                     }
-                    Toast.makeText(context, "KAROL " + String.valueOf(budget), Toast.LENGTH_SHORT).show();
                     float remaining = budget - expenses;
                     if(remaining > 0){
                         expensesLabel.setTextColor(getResources().getColor(R.color.green));

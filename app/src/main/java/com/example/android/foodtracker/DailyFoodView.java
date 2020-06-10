@@ -134,7 +134,6 @@ public class DailyFoodView extends AppCompatActivity {
     }
     public void setBudget(View v){
         budget =  totalBudget.getText().toString();
-        Toast.makeText(context,"Budget IS: " + budget, Toast.LENGTH_SHORT).show();
         available_budget.setText(budget);
         String user_id = currentUser.getUid();
 
