@@ -1,25 +1,25 @@
 package com.example.android.foodtracker;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
-import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class RVAdapter extends RecyclerView.Adapter<RVAdapter.FoodViewHolder>{
+public class RecommendationsAdapter extends RecyclerView.Adapter<RecommendationsAdapter.FoodViewHolder>{
     @Override
     public FoodViewHolder onCreateViewHolder(ViewGroup vw, int viewType) {
         View v = LayoutInflater.from(vw.getContext()).inflate(R.layout.item, vw, false);
-        FoodViewHolder pvh = new FoodViewHolder(v);
+        FoodViewHolder pvh = new FoodViewHolder(v, this.listener, flListener);
         return pvh;
     }
 
@@ -36,6 +36,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.FoodViewHolder>{
             holder.foodImage.setImageResource(R.drawable.defaultimg);
         }
         holder.FoodId.setText("#"+food.get(position).getId());
+        holder.like.setChecked(this.favoritos.contains(food.get(position).getId()));
+
     }
 
     @Override
@@ -48,14 +50,18 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.FoodViewHolder>{
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public static class FoodViewHolder extends RecyclerView.ViewHolder{
+    public static class FoodViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
         CardView cv;
         TextView FoodId;
         TextView FoodName;
         TextView FoodDescription;
         TextView FoodPrice;
         ImageView foodImage;
-        public FoodViewHolder(View viewItem){
+        onFoodListener listener;
+        FoodLikeListener foodListener;
+        Switch like;
+
+        public FoodViewHolder(View viewItem, onFoodListener listener, FoodLikeListener likeListener){
             super(viewItem);
             cv = viewItem.findViewById(R.id.cv);
             FoodName = viewItem.findViewById(R.id.food_name);
@@ -63,11 +69,41 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.FoodViewHolder>{
             foodImage = viewItem.findViewById(R.id.food_image);
             FoodDescription = viewItem.findViewById(R.id.food_description);
             FoodId = viewItem.findViewById(R.id.food_id);
+            like = viewItem.findViewById(R.id.like);
+            this.foodListener = likeListener;
+            this.listener=listener;
+            viewItem.setOnClickListener(this);
+            like.setOnCheckedChangeListener(this);
+        }
+
+
+        @Override
+        public void onClick(View v) {
+            this.listener.onFoodClick(getAdapterPosition());
+        }
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            this.foodListener.onFoodLike(getAdapterPosition(), isChecked);
         }
     }
     List<FoodRow> food;
+    onFoodListener listener;
+    FoodLikeListener flListener;
+    ArrayList<String> favoritos;
 
-    RVAdapter(List<FoodRow> food){
+    public RecommendationsAdapter(List<FoodRow> food, onFoodListener mlistener, ArrayList<String> favos, FoodLikeListener fll){
         this.food = food;
+        this.listener = mlistener;
+        this.flListener = fll;
+        this.favoritos = favos;
+    }
+
+
+    public interface onFoodListener{
+        void onFoodClick(int position);
+    }
+    public interface FoodLikeListener{
+        void onFoodLike(int position, boolean value);
     }
 }

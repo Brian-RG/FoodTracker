@@ -6,17 +6,17 @@ import android.graphics.BitmapFactory;
 import java.util.BitSet;
 
 public class FoodRow {
-    private int id;
+    private String id;
     private String name;
     private String description;
     private float price;
     private byte[] imgurl;
 
     public FoodRow(){
-        this(-1,"","",-1,null);
+        this("-1","","",-1,null);
     }
 
-    public FoodRow(int id, String name, String description, float price, byte[] img){
+    public FoodRow(String id, String name, String description, float price, byte[] img){
         this.id=id;
         this.name=name;
         this.description=description;
@@ -37,7 +37,7 @@ public class FoodRow {
         this.imgurl=newImg;
     }
 
-    public int getId(){
+    public String getId(){
         return this.id;
     }
     public String getName(){
