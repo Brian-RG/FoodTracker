@@ -12,11 +12,13 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:requestLegacyExternalStorage="true">>
-        <activity android:name=".DetailedRecommendation"></activity>
+        android:theme="@style/AppTheme">
+        <activity android:name=".EditProfileActivity"></activity>
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".DetailedRecommendation" />
         <activity
             android:name=".RecommendationsActivity"
             android:label="@string/title_activity_recommendations"
@@ -29,7 +31,6 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".EditFoodActivity" />
         <activity android:name=".CreateFood" />
-        <activity android:name=".FoodView" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

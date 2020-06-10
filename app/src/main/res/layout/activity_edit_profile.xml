@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditProfileActivity">
+
+    <Button
+        android:id="@+id/editProfileInfoBtn"
+        android:layout_width="163dp"
+        android:layout_height="67dp"
+        android:layout_marginTop="233dp"
+        android:text="Edit my information"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editAgeTV" />
+
+    <EditText
+        android:id="@+id/editAgeTV"
+        android:layout_width="248dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="73dp"
+        android:ems="10"
+        android:hint="Age"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editNameTV" />
+
+    <EditText
+        android:id="@+id/editNameTV"
+        android:layout_width="250dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="162dp"
+        android:hint="Name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/profileEdit" />
+
+    <ImageView
+        android:id="@+id/profileEdit"
+        android:layout_width="136dp"
+        android:layout_height="116dp"
+        android:layout_marginTop="28dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/newProfilePicBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="107dp"
+        android:layout_marginTop="84dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="@+id/profileEdit"
+        app:layout_constraintEnd_toEndOf="@+id/profileEdit"
+        app:layout_constraintStart_toStartOf="@+id/profileEdit"
+        app:layout_constraintTop_toTopOf="@+id/profileEdit"
+        app:srcCompat="@android:drawable/ic_menu_add" />
+</androidx.constraintlayout.widget.ConstraintLayout>

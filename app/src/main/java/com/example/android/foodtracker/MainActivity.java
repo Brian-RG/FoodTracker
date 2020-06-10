@@ -35,6 +35,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(RecommendationsIntent);
     }
 
+    public void goToProfile(View v){
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
+    }
+
     public void signOut(View v){
         mAuth.signOut();
         Intent LoginAct = new Intent(this, LoginActivity.class);

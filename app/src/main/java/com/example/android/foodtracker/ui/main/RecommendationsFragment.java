@@ -58,9 +58,10 @@ public class RecommendationsFragment extends Fragment implements Recommendations
     public SwipeRefreshLayout swr;
     Spinner drop, sort, fliterPrice;
 
+
     String categ, sortOption;
     public double lower_bound, upper_bound;
-
+  
     public RecommendationsFragment() {
     }
 
