@@ -5,7 +5,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,10 +21,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,10 +31,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.auth.User;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Transaction;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
@@ -47,11 +46,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RegistrationActivity extends AppCompatActivity {
+public class EditProfileActivity extends AppCompatActivity {
 
-    private EditText emailTV, passwordTV, nameTV, ageTV;
-    private Button regBtn;
-    private ProgressBar progressBar;
+    private EditText nameTV, ageTV;
+    private Button editBtn;
     private FloatingActionButton imageBtn;
     private ImageView profileImage;
     Context context;
@@ -62,6 +60,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private FirebaseStorage storage;
     private StorageReference ref;
     private FirebaseFirestore db;
+    private DocumentReference docRef;
 
     String imgUri = null;
 
@@ -71,93 +70,85 @@ public class RegistrationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration);
+        setContentView(R.layout.activity_edit_profile);
 
         mAuth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance();
         ref = storage.getReference();
         db = FirebaseFirestore.getInstance();
         context = getApplicationContext();
+        db.collection("userData").whereEqualTo("uid", mAuth.getCurrentUser().getUid())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()) {
+                            for(QueryDocumentSnapshot docSnap: task.getResult()) {
+                                docRef = db.collection("userData").document(docSnap.getId());
+                            }
+                        }
+                    }
+                });
 
         initializeUI();
+    }
 
-        regBtn.setOnClickListener(new View.OnClickListener() {
+    private void editUserInfo(final String imageName) {
+
+        String name, ageTxt;
+        name = nameTV.getText().toString();
+        ageTxt = ageTV.getText().toString();
+
+        if (TextUtils.isEmpty(name)) {
+            Toast.makeText(getApplicationContext(), "Enter name", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (TextUtils.isEmpty(ageTxt)) {
+            Toast.makeText(getApplicationContext(), "Enter age", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        db.runTransaction(new Transaction.Function<Void>() {
+            @Override
+            public Void apply(Transaction transaction) {
+                transaction.update(docRef, "name", nameTV.getText().toString());
+                transaction.update(docRef, "age", ageTV.getText().toString());
+                transaction.update(docRef, "imageName", imageName);
+                return null;
+            }
+        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(context,"Edited successfully", Toast.LENGTH_SHORT);
+                finish();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context,"Something went wrong", Toast.LENGTH_SHORT);
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void initializeUI() {
+        nameTV = findViewById(R.id.editNameTV);
+        ageTV = findViewById(R.id.editAgeTV);
+        profileImage = findViewById(R.id.profileEdit);
+        imageBtn = findViewById(R.id.newProfilePicBtn);
+        editBtn = findViewById(R.id.editProfileInfoBtn);
+
+        editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                registerNewUser();
+                uploadImage(mAuth.getCurrentUser().getUid());
             }
         });
         imageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setImage(RegistrationActivity.this);
+                setImage(EditProfileActivity.this);
             }
         });
-    }
-
-    private void registerNewUser() {
-        progressBar.setVisibility(View.VISIBLE);
-
-        String email, password, name, ageTxt;
-        email = emailTV.getText().toString();
-        password = passwordTV.getText().toString();
-        name = nameTV.getText().toString();
-        ageTxt = ageTV.getText().toString();
-
-
-        if (TextUtils.isEmpty(email)) {
-            Toast.makeText(getApplicationContext(), "Enter email", Toast.LENGTH_SHORT).show();
-            progressBar.setVisibility(View.GONE);
-            return;
-        }
-        if (TextUtils.isEmpty(password)) {
-            Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_LONG).show();
-            progressBar.setVisibility(View.GONE);
-            return;
-        }
-        if (TextUtils.isEmpty(name)) {
-            Toast.makeText(getApplicationContext(), "Enter name", Toast.LENGTH_SHORT).show();
-            progressBar.setVisibility(View.GONE);
-            return;
-        }
-        if (TextUtils.isEmpty(ageTxt)) {
-            Toast.makeText(getApplicationContext(), "Enter age", Toast.LENGTH_SHORT).show();
-            progressBar.setVisibility(View.GONE);
-            return;
-        }
-
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            String uid = task.getResult().getUser().getUid();
-
-                            uploadImage(uid);
-
-                            Toast.makeText(getApplicationContext(), "Registration successful!", Toast.LENGTH_LONG).show();
-                            progressBar.setVisibility(View.GONE);
-
-                            Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                        }
-                        else {
-                            Toast.makeText(getApplicationContext(), "Registration failed! Please try again later", Toast.LENGTH_LONG).show();
-                            progressBar.setVisibility(View.GONE);
-                        }
-                    }
-                });
-    }
-
-    private void initializeUI() {
-        emailTV = findViewById(R.id.registerEmail);
-        passwordTV = findViewById(R.id.registerPassword);
-        nameTV = findViewById(R.id.registerName);
-        ageTV = findViewById(R.id.registerAge);
-        regBtn = findViewById(R.id.register);
-        progressBar = findViewById(R.id.registerProgressBar);
-        profileImage = findViewById(R.id.profileImage);
-        imageBtn = findViewById(R.id.imageBtn);
     }
 
     private void setImage(Context context) {
@@ -205,8 +196,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 case 0:
                     if (resultCode == RESULT_OK && data != null) {
                         Bundle extras = data.getExtras();
-                        selectedImage = data.getData();
-                        Log.wtf("Uri Test", selectedImage.toString());
+                        Log.wtf("Uri Test", extras.toString());
                         Bitmap image = (Bitmap) extras.get("data");
                         profileImage.setImageBitmap(image);
                     }
@@ -234,35 +224,6 @@ public class RegistrationActivity extends AppCompatActivity {
         }
     }
 
-    private void addUserData(String uid) {
-        Map<String,Object> User_Record = new HashMap<>();
-
-        User_Record.put("uid", uid);
-        User_Record.put("name", nameTV.getText().toString());
-        User_Record.put("age", Integer.parseInt(ageTV.getText().toString()));
-
-        Log.wtf("After Uploading Image", imgUri);
-
-        User_Record.put("imageName", imgUri);
-
-        db.collection("userData")
-                .add(User_Record)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(context,"User data added successfully!", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
-                        Toast.makeText(context,"Something went wrong adding the user data", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
     private void uploadImage(final String uid) {
         if(selectedImage != null) {
             final String outString = new SimpleDateFormat("dd-MM-yyyy hh-mm-ss").format(new Date());
@@ -272,14 +233,14 @@ public class RegistrationActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             imgUri = outString;
-                            addUserData(uid);
-                            Toast.makeText(RegistrationActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                            editUserInfo(imgUri);
+                            Toast.makeText(EditProfileActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(RegistrationActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditProfileActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
         }

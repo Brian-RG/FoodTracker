@@ -41,7 +41,6 @@ public class RecommendationsFragment extends Fragment implements Recommendations
     RecyclerView recommendations_list;
     FirebaseFirestore db;
 
-
     public RecommendationsFragment() {
     }
 
