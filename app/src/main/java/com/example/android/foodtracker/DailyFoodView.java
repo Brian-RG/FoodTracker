@@ -17,13 +17,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.text.SimpleDateFormat;
@@ -80,6 +84,27 @@ public class DailyFoodView extends AppCompatActivity {
         foodList.setLayoutManager(lm);
         updateRecyclerView(dateSelection);
 
+        db.collection("presupuesto")
+                .whereEqualTo("date", dateSelection)
+                .whereEqualTo("user_id", currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                if(task.isSuccessful()){
+                    for(QueryDocumentSnapshot document : task.getResult()){
+                        String budget = document.getData().get("budget").toString();
+                        totalBudget.setText(budget);
+                        available_budget.setText(budget);
+                        break;
+                    }
+                }
+                else{
+                    Log.wtf("Error",task.getException());
+                }
+            }
+        });
+
+
     }
 
     public void updateRecyclerView(String date){
@@ -134,7 +159,6 @@ public class DailyFoodView extends AppCompatActivity {
     }
     public void setBudget(View v){
         budget =  totalBudget.getText().toString();
-        Toast.makeText(context,"Budget IS: " + budget, Toast.LENGTH_SHORT).show();
         available_budget.setText(budget);
         String user_id = currentUser.getUid();
 

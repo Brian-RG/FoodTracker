@@ -75,7 +75,6 @@ public class ExpensesActivity extends AppCompatActivity {
                     for(QueryDocumentSnapshot document : task.getResult()){
                         budget = Float.parseFloat(document.getData().get("budget").toString());
                     }
-                    Toast.makeText(context, "KAROL " + String.valueOf(budget), Toast.LENGTH_SHORT).show();
                     float remaining = budget - expenses;
                     if(remaining > 0){
                         expensesLabel.setTextColor(getResources().getColor(R.color.green));
