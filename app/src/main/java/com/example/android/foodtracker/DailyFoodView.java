@@ -1,6 +1,7 @@
 package com.example.android.foodtracker;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,9 +27,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.Transaction;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -55,6 +58,8 @@ public class DailyFoodView extends AppCompatActivity {
     FirebaseFirestore db;
     private FirebaseAuth mAuth;
     FirebaseUser currentUser;
+    boolean existsBudget;
+    DocumentReference docRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +78,7 @@ public class DailyFoodView extends AppCompatActivity {
 
         context = getApplicationContext();
         db = FirebaseFirestore.getInstance();
+        existsBudget = false;
 
 
         emptyV.setVisibility(View.GONE);
@@ -92,9 +98,11 @@ public class DailyFoodView extends AppCompatActivity {
 
                 if(task.isSuccessful()){
                     for(QueryDocumentSnapshot document : task.getResult()){
+                        docRef = db.collection("presupuesto").document(document.getId());
                         String budget = document.getData().get("budget").toString();
                         totalBudget.setText(budget);
                         available_budget.setText(budget);
+                        existsBudget =true;
                         break;
                     }
                 }
@@ -163,29 +171,53 @@ public class DailyFoodView extends AppCompatActivity {
         String user_id = currentUser.getUid();
 
         // Update one field, creating the document if it does not already exist.
-        Map<String, String> data = new HashMap<>();
-        data.put("budget", totalBudget.getText().toString());
+        if(existsBudget){
+            db.runTransaction(new Transaction.Function<Void>() {
+                @Nullable
+                @Override
+                public Void apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+                    transaction.update(docRef, "budget", budget);
+                    return null;
+                }
+            }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(context, "Budget updated successfully!", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(context, "Something went wrong adding the budget.", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else {
+            Map<String, String> data = new HashMap<>();
+            data.put("budget", totalBudget.getText().toString());
 
-        Map<String,Object> Budget_Record = new HashMap<>();
-        Budget_Record.put("date", dateSelection );
-        Budget_Record.put("budget", budget);
-        Budget_Record.put("user_id", user_id);
-        db.collection("presupuesto")
-                .add(Budget_Record)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(context,"Budget added successfully!", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
-                        Toast.makeText(context,"Something went wrong adding the budget.", Toast.LENGTH_SHORT).show();
-                    }
-                });
+            Map<String, Object> Budget_Record = new HashMap<>();
+            Budget_Record.put("date", dateSelection);
+            Budget_Record.put("budget", budget);
+            Budget_Record.put("user_id", user_id);
+            db.collection("presupuesto")
+                    .add(Budget_Record)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Toast.makeText(context, "Budget added successfully!", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            e.printStackTrace();
+                            Toast.makeText(context, "Something went wrong adding the budget.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
     }
 
     public void editFood(View v){
